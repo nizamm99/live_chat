@@ -1,8 +1,5 @@
 <?php
-require_once '../config/config.php';
-?>
-<?php
-require_once '../config/config.php';
+require_once '../includes/include.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -645,6 +642,7 @@ require_once '../config/config.php';
 
         <!-- jQuery 2.1.4 -->
         <script src="<?php echo TEMPLATE_PATH; ?>/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+
         <!-- jQuery UI 1.11.2 -->
         <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->

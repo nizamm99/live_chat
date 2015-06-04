@@ -1,8 +1,6 @@
 <?php
+require_once '../includes/include.php';
 
-
-
-require_once 'includes/connection.php';
 
 $process = $_POST['process'];
 
