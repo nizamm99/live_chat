@@ -74,7 +74,7 @@ require_once '../config/config.php';
                                             <li><!-- start message -->
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+                                                        <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
                                                     </div>
                                                     <h4>
                                                         Support Team
@@ -86,7 +86,7 @@ require_once '../config/config.php';
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
+                                                        <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
                                                     </div>
                                                     <h4>
                                                         AdminLTE Design Team
@@ -98,7 +98,7 @@ require_once '../config/config.php';
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
+                                                        <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
                                                     </div>
                                                     <h4>
                                                         Developers
@@ -110,7 +110,7 @@ require_once '../config/config.php';
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
+                                                        <img src="<?php echo TEMPLATE_PATH; ?>dist/img/user3-128x128.jpg" class="img-circle" alt="user image"/>
                                                     </div>
                                                     <h4>
                                                         Sales Department
@@ -122,7 +122,7 @@ require_once '../config/config.php';
                                             <li>
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
+                                                        <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user4-128x128.jpg" class="img-circle" alt="user image"/>
                                                     </div>
                                                     <h4>
                                                         Reviewers
@@ -251,13 +251,13 @@ require_once '../config/config.php';
                             <!-- User Account: style can be found in dropdown.less -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                                    <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
                                     <span class="hidden-xs">Alexander Pierce</span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <!-- User image -->
                                     <li class="user-header">
-                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                                        <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
                                         <p>
                                             Alexander Pierce - Web Developer
                                             <small>Member since Nov. 2012</small>
@@ -301,7 +301,7 @@ require_once '../config/config.php';
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                            <img src="<?php echo TEMPLATE_PATH; ?>/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
                             <p>Alexander Pierce</p>
@@ -644,9 +644,7 @@ require_once '../config/config.php';
         </script>
         <!-- Bootstrap 3.3.2 JS -->
         <script src="<?php echo TEMPLATE_PATH; ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>    
-        <!-- Morris.js charts -->
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-        <script src="<?php echo TEMPLATE_PATH; ?>/plugins/morris/morris.min.js" type="text/javascript"></script>
+      
         <!-- Sparkline -->
         <script src="<?php echo TEMPLATE_PATH; ?>/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
         <!-- jvectormap -->
@@ -668,8 +666,7 @@ require_once '../config/config.php';
         <!-- AdminLTE App -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/app.min.js" type="text/javascript"></script>    
 
-        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/pages/dashboard.js" type="text/javascript"></script>    
+        
 
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/demo.js" type="text/javascript"></script>
@@ -677,6 +674,6 @@ require_once '../config/config.php';
 </html>
 <script type="text/javascript">
             $(document).ready(function() {
-                fdskjfkljdsklfj("dddd");
+                alert("dddd");
             });
 </script>
