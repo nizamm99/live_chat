@@ -308,7 +308,9 @@ require_once '../includes/include.php';
                     </div>
 
                     <ul class="sidebar-menu">
-                        <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                        <li><a href="index.html"><i class="fa fa-circle-o"></i> user 1</a></li>
+                        <li><a href="index.html"><i class="fa fa-circle-o"></i> user 1</a></li>
+						<li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard </a></li>
                         <li><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
 
                     </ul>
@@ -444,9 +446,9 @@ require_once '../includes/include.php';
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
                                     <div class="input-group">
-                                        <input class="form-control" placeholder="Type message..."/>
+                                        <input id="sendMessageText" class="form-control" placeholder="Type message..."/>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                            <button id="sendMessage" class="btn btn-success">SEND</button>
                                         </div>
                                     </div>
                                 </div>
@@ -672,9 +674,7 @@ require_once '../includes/include.php';
         <script src='<?php echo TEMPLATE_PATH; ?>/plugins/fastclick/fastclick.min.js'></script>
         <!-- AdminLTE App -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/app.min.js" type="text/javascript"></script>    
-
-
-
+		
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/demo.js" type="text/javascript"></script>
     </body>
@@ -691,6 +691,26 @@ require_once '../includes/include.php';
                             var chatId = $(this).attr("data-userid");
                             acceptChat(chatId);
                         });
+						
+						$("#sendMessage").click(function(){
+							$sendMessageText = $("#sendMessageText").val();
+							if($sendMessageText != ""){
+								$.ajax({
+									url: "<?php echo BASE_PATH ?>/ajax_pages/admin_ajax.php",
+									context: document.body,
+									data: {process: "sendMessage", messageText:$sendMessageText},
+									type: "POST"
+									}).done(function(data){
+										if(data != 1){
+											$("#status_area").html("<div class='alert alert-danger'> Some Problem Found!!! </div>");
+										}else{
+											$("#sendMessageText").val("");
+										}
+									}).fail(function(){
+										$("#status_area").html("<div class='alert alert-danger'> Some Problem Found!!! </div>");
+									});;
+							}
+						});
 
                     }
             );
@@ -701,50 +721,66 @@ require_once '../includes/include.php';
                     url: "<?php echo BASE_PATH ?>/ajax_pages/admin_ajax.php",
                     context: document.body,
                     data: {process: "getFreequentData"},
-                    type: "POST"
-                }).done(function (return_data) {
+                    type: "POST",
+					dataType: "json"
+                }).done(function ($data) {
                     //alert(data);
                     try {
-                        $data = $.parseJSON(return_data);
                         var pending_chat_requests = $data['pending_chat_requests'];
                         var pending_chat_requests_html = "<h1> Pending Chat </h1>";
                         $.each(pending_chat_requests, function (key, value) {
                             pending_chat_requests_html = pending_chat_requests_html + "<a href='javascript:void(0)' class='accept_chat_requests' data-userid='" + value.userid + "' >  " + value.name + "  " + value.userid + " </a> <br />";
                         });
                         $("#pending_chat_requests").html(pending_chat_requests_html);
-                        var current_chat = $data['current_chat'];
-                        var current_chat_html = "<h1> Current Chat </h1>";
-                        $.each(current_chat, function (key, value) {
-                            current_chat_html = current_chat_html + "<a href='javascript:void(0)' class='accept_chat_requests' data-userid='" + value.userid + "' >  " + value.name + "  " + value.userid + " </a> <br />";
-                        });
+                         var current_chat = $data['current_chat'];
+                        var current_chat_html = "";
+                         $.each(current_chat, function (key, value) {
+                            current_chat_html = current_chat_html + '<li><a href="javascript:void(0)" class="accept_chat_requests" data-userid="' + value.userid + '" > <i class="fa fa-circle text-success"></i> ' + value.userid +  ' ' + value.name + ' </a></li>' ;
+						}); 
+						$(".sidebar-menu").html(current_chat_html);
 
-                        $("#current_chat").html(current_chat_html);
 
-
-                        var current_chat_log = $data['chat'];
-                        var chat_user_html = "";
-                        $.each(current_chat_log, function (userid, chat_users) {
-
-                            chat_user_html = chat_user_html + "<div >";
-                            $.each(current_chat_log, function (key, value) {
-                                console.log(value.message);
-                                //alert(value);
-                            });
-                            chat_user_html = chat_user_html + "</div>";
-
-                        });
+						var $chat_data_array = $data['chat'];
+						var $chat_html = "";
+						$.each($chat_data_array, function(user, $chat_data_user_array){
+							$chat_html = '<div id="chat-box" class="box-body chat"> <div class="item">';
+							$.each($chat_data_user_array, function(key, $chat_data){
+								if($chat_data.message_user == "2001"){
+								$chat_html = $chat_html + '<img class="online" alt="user image" src="http://localhost/live_chat/resources/theme/Agri_Admin/dist/img/user4-128x128.jpg">';
+								$chat_html = $chat_html + '<p class="message"> ';
+                                $chat_html = $chat_html + '<a class="name" href="#">';
+                                $chat_html = $chat_html + '<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ' + $chat_data.time + '</small>';
+                                $chat_html = $chat_html + $chat_data.message_user;
+                                $chat_html = $chat_html + '</a>';
+                                $chat_html = $chat_html + $chat_data.message;
+                                $chat_html = $chat_html + '</p>';	
+								}else{
+									$chat_html = $chat_html + '<div class="attachment">';
+									$chat_html = $chat_html + '<p class="filename">';
+									$chat_html = $chat_html +  $chat_data.message;
+									$chat_html = $chat_html + '</p>';
+									$chat_html = $chat_html + '<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> ' + $chat_data.time + '</small>';
+									$chat_html = $chat_html + '</div>';
+									$chat_html = $chat_html + '<div class="pull-right">';
+									$chat_html = $chat_html + '</div>';
+									$chat_html = $chat_html + '</div>';
+								}
+								
+								
+							});
+							$chat_html = $chat_html + ' </div> </div>';
+						});
+						$("#chat-box").html($chat_html);
                     } catch (ex) {
-                        $("#status_area").html("<div class='alert alert-danger'> Some Problem Found!!! </div>");
+                        $("#status_area").html("<div class='alert alert-danger'> "+ ex +" </div>");
                     }
 
-
                 }).fail(function () {
-                    // alert( "error" );
-                })
-                        .always(function () {
-                            //alert( "complete" );
-                        });
-                setTimeout('chatAdmin()', 3000);
+                    $("#status_area").html("<div class='alert alert-danger'> Some error found!! </div>");
+                }).always(function () {
+                
+				});
+                setTimeout('chatAdmin()', 6000);
             }
 
             function acceptChat(chatId) {
@@ -759,10 +795,9 @@ require_once '../includes/include.php';
 
                 }).fail(function () {
                     // alert( "error" );
-                })
-                        .always(function () {
+                }).always(function () {
                             //alert( "complete" );
-                        });
+                });
             }
 </script>
 </script>

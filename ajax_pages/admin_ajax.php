@@ -24,13 +24,15 @@ while($result_current_chat = mysql_fetch_assoc($sql_current_chat)){
 	$admin_userid = 2001;
 	$sql = mysql_query("SELECT * FROM `chat` WHERE `chat_user_id`= '$userid' AND  `admin_user_id` ='$admin_userid'");
 	while($chat_result=mysql_fetch_assoc($sql)){
-		$chat[$userid][] = $chat_result;
+		$chat_array[] = $chat_result;
 	}
+	$chat[$userid] = $chat_array;
 	$array_current_chat[] = $result_current_chat;
 	
 } 
+//echo "<pre>";
 
-
+//var_dump($chat);
 $data['current_chat'] = $array_current_chat;
 $data['chat'] = $chat;
 $data['pending_chat_requests'] =$array_not_chat_started;
@@ -41,5 +43,15 @@ echo json_encode($data);
 }else if($process == "acceptChat"){
 	$userId = $_POST['userid'];
 	$accept = mysql_query("update chat_users set chat_admin_id='2001' ,`is_chat_started`=1 where userid='$userId'");
+}else if($process == "sendMessage"){
+	$messageText = $_POST['messageText'];
+	
+	$sql = "insert into  `chat` (`chat_user_id`, `admin_user_id`, `message_user`, `message`, `time`) values  (1001,2001,2001,'" . mysql_real_escape_string($messageText) . "',now())";
+	if(mysql_query($sql)){
+		echo 1;
+	}else{
+		echo 0;
+	}
 	
 }
+
