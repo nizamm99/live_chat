@@ -333,9 +333,18 @@ require_once '../config/config.php';
                     </ol>
                 </section>
 
+               
+
                 <!-- Main content -->
                 <section class="content">
                     <!-- Small boxes (Stat box) -->
+                    
+                    <div class="row" >
+                        <div class="col-lg-12">  
+                            <div id="status_area">
+                            </div>
+                        </div> 
+                    </div>
                     <div class="row">
                         <div class="col-lg-3 col-xs-6">
                             <!-- small box -->
@@ -644,7 +653,7 @@ require_once '../config/config.php';
         </script>
         <!-- Bootstrap 3.3.2 JS -->
         <script src="<?php echo TEMPLATE_PATH; ?>/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>    
-      
+
         <!-- Sparkline -->
         <script src="<?php echo TEMPLATE_PATH; ?>/plugins/sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
         <!-- jvectormap -->
@@ -666,14 +675,96 @@ require_once '../config/config.php';
         <!-- AdminLTE App -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/app.min.js" type="text/javascript"></script>    
 
-        
+
 
         <!-- AdminLTE for demo purposes -->
         <script src="<?php echo TEMPLATE_PATH; ?>/dist/js/demo.js" type="text/javascript"></script>
     </body>
 </html>
 <script type="text/javascript">
-            $(document).ready(function() {
-                alert("dddd");
-            });
+            $(document).ready(
+                    function () {
+                        chatAdmin();
+                        $("#startChat").on("click", function () {
+                            $("#chatDiv").show();
+                        });
+
+                        $("#pending_chat_requests").on("click", ".accept_chat_requests", function () {
+                            var chatId = $(this).attr("data-userid");
+                            acceptChat(chatId);
+                        });
+
+                    }
+            );
+
+            function chatAdmin() {
+                $("#status_area").html("");
+                $.ajax({
+                    url: "<?php echo BASE_PATH ?>/ajax_pages/admin_ajax.php",
+                    context: document.body,
+                    data: {process: "getFreequentData"},
+                    type: "POST"
+                }).done(function (return_data) {
+                    //alert(data);
+                    try {
+                        $data = $.parseJSON(return_data);
+                        var pending_chat_requests = $data['pending_chat_requests'];
+                        var pending_chat_requests_html = "<h1> Pending Chat </h1>";
+                        $.each(pending_chat_requests, function (key, value) {
+                            pending_chat_requests_html = pending_chat_requests_html + "<a href='javascript:void(0)' class='accept_chat_requests' data-userid='" + value.userid + "' >  " + value.name + "  " + value.userid + " </a> <br />";
+                        });
+                        $("#pending_chat_requests").html(pending_chat_requests_html);
+                        var current_chat = $data['current_chat'];
+                        var current_chat_html = "<h1> Current Chat </h1>";
+                        $.each(current_chat, function (key, value) {
+                            current_chat_html = current_chat_html + "<a href='javascript:void(0)' class='accept_chat_requests' data-userid='" + value.userid + "' >  " + value.name + "  " + value.userid + " </a> <br />";
+                        });
+
+                        $("#current_chat").html(current_chat_html);
+
+
+                        var current_chat_log = $data['chat'];
+                        var chat_user_html = "";
+                        $.each(current_chat_log, function (userid, chat_users) {
+
+                            chat_user_html = chat_user_html + "<div >";
+                            $.each(current_chat_log, function (key, value) {
+                                console.log(value.message);
+                                //alert(value);
+                            });
+                            chat_user_html = chat_user_html + "</div>";
+
+                        });
+                    } catch (ex) {
+                        $("#status_area").html("<div class='alert alert-danger'> Some Problem Found!!! </div>");
+                    }
+
+
+                }).fail(function () {
+                    // alert( "error" );
+                })
+                        .always(function () {
+                            //alert( "complete" );
+                        });
+                setTimeout('chatAdmin()', 3000);
+            }
+
+            function acceptChat(chatId) {
+                $.ajax({
+                    url: "<?php echo BASE_PATH ?>/ajax_pages/admin_ajax.php",
+                    context: document.body,
+                    data: {process: "acceptChat", userid: chatId},
+                    type: "POST"
+                }).done(function (data) {
+                    chatAdmin();
+                    // $("#pending_chat_requests").html(pending_chat_requests_html);
+
+                }).fail(function () {
+                    // alert( "error" );
+                })
+                        .always(function () {
+                            //alert( "complete" );
+                        });
+            }
+</script>
 </script>
