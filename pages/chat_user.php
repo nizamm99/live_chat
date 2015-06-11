@@ -743,9 +743,10 @@ require_once '../includes/include.php';
 						var $chat_data_array = $data['chat'];
 						var $chat_html = "";
 						$.each($chat_data_array, function(user, $chat_data_user_array){
-							$chat_html = '<div id="chat-box" class="box-body chat"> <div class="item">';
+							$chat_html = '<div id="chat-box" class="box-body chat">';
 							$.each($chat_data_user_array, function(key, $chat_data){
-								if($chat_data.message_user == "2001"){
+								if($chat_data.message_user != "2001"){
+									$chat_html = $chat_html + '<div class="item">';
 								$chat_html = $chat_html + '<img class="online" alt="user image" src="http://localhost/live_chat/resources/theme/Agri_Admin/dist/img/user4-128x128.jpg">';
 								$chat_html = $chat_html + '<p class="message"> ';
                                 $chat_html = $chat_html + '<a class="name" href="#">';
@@ -753,7 +754,8 @@ require_once '../includes/include.php';
                                 $chat_html = $chat_html + $chat_data.message_user;
                                 $chat_html = $chat_html + '</a>';
                                 $chat_html = $chat_html + $chat_data.message;
-                                $chat_html = $chat_html + '</p>';	
+                                $chat_html = $chat_html + '</p>';
+								//$chat_html = $chat_html + '</div>';								
 								}else{
 									$chat_html = $chat_html + '<div class="attachment">';
 									$chat_html = $chat_html + '<p class="filename">';
@@ -763,7 +765,7 @@ require_once '../includes/include.php';
 									$chat_html = $chat_html + '</div>';
 									$chat_html = $chat_html + '<div class="pull-right">';
 									$chat_html = $chat_html + '</div>';
-									$chat_html = $chat_html + '</div>';
+									
 								}
 								
 								
